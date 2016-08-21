@@ -22,7 +22,7 @@
 				<input type="text" class="form-control" id='username' placeholder="Type in a twitter handle (eg. @BarackObama, @HillaryClinton,@realDonaldTrump)">
 
 				<button type="button" class="btn btn-primary" onclick="
-				markovtweet(document.getElementById('username').value.split(' '), 1, function(error, result){
+				markovtweet(document.getElementById('username').value.split(' '), function(error, result){
 					if(error) throw error;
 					document.getElementById('result').innerHTML = 'Loading . . .';
 					document.getElementById('result').innerHTML = result;

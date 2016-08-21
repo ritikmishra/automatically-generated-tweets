@@ -59,11 +59,13 @@ var markov_to_tweet = function (mark_obj) {
       result.push(randitem(mark_obj[result[result.length-2] + " " + result[result.length-1]] ))
     }
   }
-  return result
+  if(result.join(" ").length > 140){
+    return result
+  }
 }
 //single  user markovtweet
 // usernames is a list of strings, callback is a function with args (err, data), inceptions is an int
-var markovtweet = function (usernames, inceptions, callback){
+var markovtweet = function (usernames, callback){
   //gather tweets from users
   for(var i = 0; i < usernames.length; i++){
     if(usernames[i][0] == '@'){
@@ -79,15 +81,18 @@ var markovtweet = function (usernames, inceptions, callback){
       console.log("Tweets obtained")
 
       console.log("Proceeding into inception for loop")
-      for(var i = 0; i < inceptions; i++){
+      /*for(var i = 0; i < inceptions; i++){
         let fake_tweets_text = []
         for(var i = 0; i < 50; i++){
           fake_tweets_text.push(markov_to_tweet(mark_obj))
         }
         mark_obj = markovchain(fake_tweets_text, mark_obj)
       }
-
+*/
       result = markov_to_tweet(mark_obj)
+      while(!result){
+        result = markov_to_tweet(mark_obj)
+      }
       return callback(null, result.join(" "))
     })
   }
