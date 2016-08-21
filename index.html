@@ -14,17 +14,21 @@
 		<div class="container">
 			<div class="jumbotron" id="header">
 				<h1>Automatically Generated Tweets</h1>
-				<p>Generates new tweets with Markov Chains. The words come from existing tweets from the specified user.</p>
+				<h4>Generates new tweets with Markov Chains. The words come from existing tweets from the specified user(s).</h4>
+				<p>Instructions: Type in the username(s) in the textbox. If typing multiple, seperate them with spaces. <p style="font-weight: bold"> No commas</p></p>
 			</div>
 			<div class="row">
 
 				<input type="text" class="form-control" id='username' placeholder="Type in a twitter handle (eg. @BarackObama, @HillaryClinton,@realDonaldTrump)">
 
-				<button type="button" class="btn btn-primary" onclick="markovtweet(document.getElementById('username').value, function(error, tweet){
-					if (error) return error
-					document.getElementById('result').innerHTML = tweet;
-				})">Submit</button>
-
+				<button type="button" class="btn btn-primary" onclick="
+				markovtweet(document.getElementById('username').value.split(' '), 1, function(error, result){
+					if(error) throw error;
+					document.getElementById('result').innerHTML = 'Loading . . .';
+					document.getElementById('result').innerHTML = result;
+				});">
+				Submit
+			</button>
 			</div>
 			<div class="row">
 				<h2 class=".col-sm-12" id="result"></h2>
