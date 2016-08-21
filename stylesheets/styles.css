@@ -217,12 +217,15 @@ header ul li + li + li {
   width:89px;
 }
 
+<<<<<<< HEAD
 
 header ul li + li {
   border-right:none;
   width:89px;
 }
 
+=======
+>>>>>>> 27c7a0604322fea9d30310643baa295416cf9a0d
 header ul a strong {
   font-size:14px;
   display:block;
