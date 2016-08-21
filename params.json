@@ -1,0 +1,6 @@
+{
+  "name": "Automatically-generated-tweets",
+  "tagline": "",
+  "body": "# automatically-generated-tweets\r\n\r\n> Generates tweets using markov chains and previous tweets.\r\n\r\n### Run from source\r\n\r\n```\r\n$ electron index.js\r\n```\r\n\r\n### Building from source\r\n\r\n```\r\n$ npm run build\r\n```\r\n\r\nBuilds the app for macOS, Linux, and Windows, using [electron-packager](https://github.com/electron-userland/electron-packager).\r\n\r\n\r\n## License\r\n\r\nMIT © [Ritik Mishra](http://example.com)\r\n",
+  "note": "Don't delete this file! It's used internally to help with page regeneration."
+}
