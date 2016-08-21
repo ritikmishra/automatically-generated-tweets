@@ -1,13 +1,17 @@
 module.exports = function(username, callback){
-  var nlp = require('nlp_compromise')
+  //var nlp = require('.node_modules/nlp_compromise')
   var twitter = require('twitter')
-  var natural = require('natural')
+  //var natural = require('.node_modules/natural')
   var randobj = require('pick-pair')
   var randitem = require('pick-item')
-  //var request = require('request')
+
 
   var args = process.argv.slice(2);
-  var username = args[0]
+  if(username){
+    if(username[0] == '@'){
+      username = username.substr(1);
+    }
+  }
 
   //begining
 
@@ -54,7 +58,7 @@ module.exports = function(username, callback){
     }
 
 
-    for(var i = 0; i < 20; i++){
+    while(true){
       if(result.length == 0){
         filler=randobj(mark_obj)
 
@@ -71,12 +75,13 @@ module.exports = function(username, callback){
         result.push(randitem( mark_obj[result[result.length-2] + " " + result[result.length-1]] ))
       }
     }
+    /*
     var result_nlp = nlp.text(result.join(" "))
-  /*
     if (!(result_nlp.sentences[0].terms[0].pos["Noun"])){
       result.unshift(randitem(nouns))
     }
     */
+    //console.log(result.join(" "))
     return callback(null, result.join(" "))
 
 

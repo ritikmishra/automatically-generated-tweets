@@ -1,7 +1,7 @@
 'use strict';
 const electron = require('electron');
-
-const app = electron.app;
+const markovtweet = require('./markovtweet')
+const {app, BrowserWindow} = electron
 
 // adds debug features like hotkeys for triggering dev tools and reload
 require('electron-debug')();
