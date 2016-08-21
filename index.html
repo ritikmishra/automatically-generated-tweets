@@ -1,9 +1,5 @@
 <!doctype html>
 <html>
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 27c7a0604322fea9d30310643baa295416cf9a0d
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
@@ -99,52 +95,4 @@
       </footer>
     </div>
     <script src="javascripts/scale.fix.js"></script>
-<<<<<<< HEAD
-
-  </body>
-=======
-	<head>
-		<meta charset="utf-8">
-		<title>Automatically Generated Tweets</title>
-		<script>
-		const markovtweet = require('./markovtweet');
-		</script>
-		<link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-		<link rel="stylesheet" href="index.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	</head>
-	<body>
-		<div class="container">
-			<div class="jumbotron" id="header">
-				<h1>Automatically Generated Tweets</h1>
-				<h4>Generates new tweets with Markov Chains. The words come from existing tweets from the specified user(s).</h4>
-				<p>Instructions: Type in the username(s) in the textbox. If typing multiple, seperate them with spaces. <p style="font-weight: bold"> No commas</p></p>
-			</div>
-			<div class="row">
-
-				<input type="text" class="form-control" id='username' placeholder="Type in a twitter handle (eg. @BarackObama, @HillaryClinton,@realDonaldTrump)">
-
-				<button type="button" class="btn btn-primary" onclick="
-				markovtweet(document.getElementById('username').value.split(' '), 1, function(error, result){
-					if(error) throw error;
-					document.getElementById('result').innerHTML = 'Loading . . .';
-					document.getElementById('result').innerHTML = result;
-				});">
-				Submit
-			</button>
-			</div>
-			<div class="row">
-				<h2 class=".col-sm-12" id="result"></h2>
-			</div>
-
-
-
-
-		</div>
-	</body>
->>>>>>> b4e7fc79a922202c6198cc1f6ef75e75ddc72968
-=======
-    
-  </body>
->>>>>>> 27c7a0604322fea9d30310643baa295416cf9a0d
 </html>
