@@ -8,8 +8,7 @@ var randitem = require('pick-item')
 var tapi = new twitter({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
   consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-  access_token_key: process.env.TWITTER_ACCESS_TOKEN,
-  access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
+  bearer_token: process.env.TWITTER_BEARER_TOKEN
 });
 
 var tweets_text = []
@@ -36,7 +35,7 @@ var markovchain = function (tweets_text, markov_data){
       }
     }
   }
-  console.log("Markov chained")
+  //console.log("Markov chained")
   return mark_obj
 
 }
@@ -78,9 +77,9 @@ var markovtweet = function (usernames, callback){
         tweets_text.push(tweets[i].text.split(" "))
       }
       mark_obj = markovchain(tweets_text, mark_obj)
-      console.log("Tweets obtained")
+      //console.log("Tweets obtained")
 
-      console.log("Proceeding into inception for loop")
+      //console.log("Proceeding into inception for loop")
       /*for(var i = 0; i < inceptions; i++){
         let fake_tweets_text = []
         for(var i = 0; i < 50; i++){
