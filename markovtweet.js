@@ -17,26 +17,25 @@ var nouns = []
 var verbs = []
 var result = []
 
-var markovchain = function (tweets_text, markov_data){
-  var mark_obj_in = markov_data
+var markovchain = function (tweets_text){
   for(var i = 0; i < tweets_text.length; i++){
     //loops through tweet-arrays split into words
     for(var j = 0; j < (tweets_text[i].length - 2); j++){
       //loops through words in said tweet arrays
-      if(mark_obj_in[tweets_text[i][j] + " " + tweets_text[i][j + 1]]){//if the key exists
-        if(mark_obj_in[tweets_text[i][j] + " " + tweets_text[i][j + 1]].indexOf(tweets_text[i][j+2]) == -1){
-          //console.log(mark_obj_in[tweets_text[i][j] + " " + tweets_text[i][j + 1]])
-          mark_obj_in[tweets_text[i][j] + " " + tweets_text[i][j + 1]].push(tweets_text[i][j+2])
+      if(mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]]){//if the key exists
+        if(mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]].indexOf(tweets_text[i][j+2]) == -1){
+          //console.log(mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]])
+          mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]].push(tweets_text[i][j+2])
         }
       }
       else{
-        mark_obj_in[tweets_text[i][j] + " " + tweets_text[i][j + 1]] = [tweets_text[i][j+2]]
+        mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]] = [tweets_text[i][j+2]]
         //console.log(tweets_text[i][j+2])
       }
     }
   }
   //console.log("Markov chained")
-  return mark_obj_in
+  return mark_obj
 
 }
 
@@ -76,7 +75,7 @@ var markovtweet = function (usernames, callback){
       for(var i = 0; i < tweets.length; i++){
         tweets_text.push(tweets[i].text.split(" "))
       }
-      mark_obj = markovchain(tweets_text, mark_obj)
+      mark_obj = markovchain(tweets_text)
       //console.log("Tweets obtained")
 
       //console.log("Proceeding into inception for loop")

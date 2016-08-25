@@ -29,20 +29,25 @@ server.listen(process.env.PORT || 5000, function(){
 dispatcher.onGet("/tweet", function(req, res) {
   console.log(req.params)
   if(req.params.usernames){
-    markovtweet(req.params.usernames, function(err, data){
-      if(err) return err
-      console.log(data)
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end(data);
-    })
-  }
-  else{
-    markovtweet(["realDonaldTrump","HillaryClinton"], function(err, data){
-      if(err) return err
-      console.log(data)
-      res.writeHead(200, {'Content-Type': 'text/plain'});
-      res.end(data);
-    })
+    console.log("proceeding as")
+    if(typeof req.params.usernames == "string"){
+      console.log("proceeding as string")
+      markovtweet([req.params.usernames], function(err, data){
+        if(err) return err
+        console.log(data)
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end(data);
+      })
+    }
+    else{
+      console.log("proceeding as list")
+      markovtweet(req.params.usernames, function(err, data){
+        if(err) return err
+        console.log(data)
+        res.writeHead(200, {'Content-Type': 'text/plain'});
+        res.end(data);
+      })
+    }
   }
 
 });
