@@ -1,0 +1,34 @@
+html,
+body {
+	padding: 0;
+	margin: 0;
+}
+
+body {
+	font-family: 'Ubuntu', sans-serif;
+	text-align: center;
+
+
+}
+
+h1 {
+	font-size: 40px;
+	font-weight: 100;
+	margin: 0;
+	padding: 0;
+}
+
+#username {
+	font-size: 2.5vh;
+	height:10.5vh;
+}
+
+#button {
+	border: none;
+	height: 10.5vh;
+	width: 33vw;
+}
+#button-text{
+	font-family: "Ubuntu",sans-serif;
+  font-size: 3vh;
+}
