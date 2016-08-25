@@ -22,7 +22,7 @@ var server = http.createServer(handleRequest);
 //Lets start our server
 server.listen(process.env.PORT || 5000, function(){
     //Callback triggered when server is successfully listening. Hurray!
-    console.log("Server listening on: http://localhost:%s", PORT);
+    console.log("Server listening on: http://localhost:%s", proccess.env.PORT);
 });
 
 //A sample GET request
