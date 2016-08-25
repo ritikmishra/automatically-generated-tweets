@@ -41,25 +41,25 @@ var markovchain = function (tweets_text, markov_data){
 }
 
 var markov_to_tweet = function (mark_obj) {
-  let result = []
+  var result_in = []
   while(true){
-    if(result.length == 0){
+    if(result_in.length == 0){
       filler=randobj(mark_obj)
       filler2=Object.keys(filler)[0].split(" ")
-      result.push(filler2[0])
-      result.push(filler2[1])
-      result.push(randitem(filler[Object.keys(filler)[0]]))
+      result_in.push(filler2[0])
+      result_in.push(filler2[1])
+      result_in.push(randitem(filler[Object.keys(filler)[0]]))
     }
-    else if(result[result.length-1] == undefined){
-      result.pop()
+    else if(result_in[result_in.length-1] == undefined){
+      result_in.pop()
       break;
     }
     else{
-      result.push(randitem(mark_obj[result[result.length-2] + " " + result[result.length-1]] ))
+      result_in.push(randitem(mark_obj[result_in[result_in.length-2] + " " + result_in[result_in.length-1]] ))
     }
   }
-  if(result.join(" ").length > 140){
-    return result
+  if(result_in.join(" ").length > 140){
+    return result_in
   }
 }
 //single  user markovtweet
