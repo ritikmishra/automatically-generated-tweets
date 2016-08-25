@@ -16,7 +16,7 @@ var httpGetCallback = function(error, tweet){
 
 var btnclick = function(){
   var usernames = document.getElementById('username').value.split(" ");
-  var url = 'http://localhost:5000/tweet?'
+  var url = 'http://automatically-generated-tweets.herokuapp.com/?'
   for(var i = 0; i < usernames.length; i++){
     url = url + "usernames=" + usernames[i] + "&"
   }
