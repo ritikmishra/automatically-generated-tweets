@@ -11,7 +11,7 @@ var forceHTTP = function(req, res, next){
   res.set('Strict-Transport-Security', ['max-age=60000', 'includeSubDomains']);
   console.log("Connection secure?" + req.secure.toString())
   console.log(req.protocol)
-  console.log(req.)
+
   if(req.secure){
     console.log("attempting redirect to " + ['http://' + req.hostname + req.originalUrl].join(""))
     res.redirect(['http://' + req.hostname + req.originalUrl].join(""))
