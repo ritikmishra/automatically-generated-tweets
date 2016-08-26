@@ -10,6 +10,7 @@ var forceHTTPS = function(req, res, next){
   console.log("Request made to " + req.originalUrl);
   res.set('Strict-Transport-Security', ['max-age=60000', 'includeSubDomains']);
   console.log("Connection secure?" + req.secure.toString())
+  console.log(req.protocol)
   if(!req.secure){
     console.log("attempting redirect to " + ['https://' + req.hostname + req.originalUrl].join(""))
     res.redirect(['https://' + req.hostname + req.originalUrl].join(""))
