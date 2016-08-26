@@ -11,9 +11,11 @@ var forceHTTPS = function(req, res, next){
   res.set('Strict-Transport-Security', ['max-age=60000', 'includeSubDomains']);
   if(!req.secure){
     res.redirect(['https://' + req.hostname + req.originalUrl])
-    
+
   }
-  next();
+  else{
+    next();
+  }
 }
 
 //returns ./index.html
