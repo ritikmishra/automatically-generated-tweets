@@ -34,7 +34,7 @@ dispatcher.onGet("/tweet", function(req, res) {
       markovtweet([req.params.usernames], function(err, data){
         if(err) return err
         console.log(data)
-        res.writeHead(200, {'Content-Type': 'text/plain', 'Strict-Transport-Security': '999999'});
+        res.writeHead(200, {'Content-Type': 'text/plain', 'Strict-Transport-Security': '3600'});
         res.end(data);
       })
     }
@@ -43,7 +43,7 @@ dispatcher.onGet("/tweet", function(req, res) {
       markovtweet(req.params.usernames, function(err, data){
         if(err) return err
         console.log(data)
-        res.writeHead(200, {'Content-Type': 'text/plain', 'Strict-Transport-Security': '999999'});
+        res.writeHead(200, {'Content-Type': 'text/plain', 'Strict-Transport-Security': ['max-age=60000','includeSubDomains'] });
         res.end(data);
       })
     }
@@ -53,7 +53,7 @@ dispatcher.onGet("/tweet", function(req, res) {
 
 //A sample GET request
 dispatcher.onGet("/", function(req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html', 'Strict-Transport-Security': '999999'});
+  res.writeHead(200, {'Content-Type': 'text/html', 'Strict-Transport-Security': '3600'});
   var file = fs.readFile('index.html', 'utf8', function callback(err, data){
     if (err) return console.error(err);
     var html = data
@@ -63,7 +63,7 @@ dispatcher.onGet("/", function(req, res) {
 });
 
 dispatcher.onGet("/index.js", function(req, res) {
-  res.writeHead(200, {'Content-Type': 'application/javascript', 'Strict-Transport-Security': '999999'});
+  res.writeHead(200, {'Content-Type': 'application/javascript', 'Strict-Transport-Security': '3600'});
   var file = fs.readFile('index.js', 'utf8', function callback(err, data){
     if (err) return console.error(err);
     var html = data
@@ -73,7 +73,7 @@ dispatcher.onGet("/index.js", function(req, res) {
 });
 
 dispatcher.onGet("/index.css", function(req, res) {
-  res.writeHead(200, {'Content-Type': 'text/css', 'Strict-Transport-Security': '999999', 'Strict-Transport-Security': '999999'});
+  res.writeHead(200, {'Content-Type': 'text/css', 'Strict-Transport-Security': '3600', 'Strict-Transport-Security': '3600'});
   var file = fs.readFile('index.css', 'utf8', function callback(err, data){
     if (err) return console.error(err);
     var html = data
