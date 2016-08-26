@@ -17,14 +17,6 @@ var forceHTTP = function(req, res, next){
   else{
     next() /* Continue to other routes if we're not redirecting */
   }
-
-  if(req.secure){
-    console.log("attempting redirect to " + ['http://' + req.hostname + req.originalUrl].join(""))
-    res.redirect(['http://' + req.hostname + req.originalUrl].join(""))
-  }
-  else{
-    next();
-  }
 }
 app.use(forceHTTP)
 //returns ./index.html
