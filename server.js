@@ -9,8 +9,14 @@ var fs = require('fs')
 var forceHTTP = function(req, res, next){
   console.log("Request made to " + req.originalUrl);
   res.set('Strict-Transport-Security', ['max-age=60000', 'includeSubDomains']);
-  console.log("Connection secure?" + req.secure.toString())
-  console.log(req.protocol)
+  console.log("Connection secure?")
+  console.log(req.headers['x-forwarded-proto'])
+  if(req.headers['x-forwarded-proto']!='https'){
+    res.redirect('https://automatically-generated-tweets.herokuapp.com'+req.url)
+  }
+  else{
+    next() /* Continue to other routes if we're not redirecting */
+  }
 
   if(req.secure){
     console.log("attempting redirect to " + ['http://' + req.hostname + req.originalUrl].join(""))
