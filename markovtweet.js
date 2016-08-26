@@ -91,9 +91,11 @@ var markovtweet = function (usernames, callback){
       while(!result){
         result = markov_to_tweet(mark_obj)
       }
+      console.log(result.join(" "))
       return callback(null, result.join(" "))
     })
   }
+
 
 
 }// end of function

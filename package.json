@@ -4,6 +4,7 @@
   "description": "Uses a Markov Chain and the twitter api to make fake tweets",
   "main": "markovtweet.js",
   "dependencies": {
+    "express": "^4.14.0",
     "httpdispatcher": "^1.0.0"
   },
   "devDependencies": {},

@@ -22,6 +22,7 @@ var btnclick = function(){
   }
   httpGetAsync(url,function(error, tweet){
     if(error){console.log(error);}
+    console.log(tweet)
     document.getElementById('result').innerHTML = tweet;
   } )
 }

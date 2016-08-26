@@ -1,83 +1,68 @@
 //Lets require/import the HTTP module
-var http = require('http');
-var dispatcher = require('httpdispatcher');
+var express = require('express');
+var app = express();
 var markovtweet = require('./markovtweet');
 var fs = require('fs')
-//We need a function which handles requests and send response
-//Lets use our dispatcher
-function handleRequest(request, response){
-    try {
-        //log the request on console
-        //console.log(request.url);
-        //console.log(request.params);
-        //Disptach
-        dispatcher.dispatch(request, response);
-    } catch(err) {
-        console.log(err);
-    }
-}
-//Create a server
-var server = http.createServer(handleRequest);
 
-//Lets start our server
-server.listen(process.env.PORT || 5000, function(){
-    //Callback triggered when server is successfully listening. Hurray!
-    console.log("Server listening on: http://localhost:%s", process.env.PORT || 5000);
+//forces HTTPS by checking if the user is on the http version and redirecting to https if so
+//also activates HSTS for about 16 hours
+var forceHTTPS = function(req, res, next){
+  console.log("Request made to " + req.originalUrl);
+  res.set('Strict-Transport-Security', ['max-age=60000', 'includeSubDomains']);
+  if(!req.secure){
+    res.redirect(['https://' + req.hostname + req.originalUrl])
+    res.end()
+  }
+  next();
+}
+
+//returns ./index.html
+app.get('/', forceHTTPS, function (req, res) {
+  var file = fs.readFile('index.html', 'utf8', function callback(err, html){
+    if (err) return console.error(err);
+    res.send(html)
+  });
 });
 
-dispatcher.onGet("/tweet", function(req, res) {
-  console.log(req.params)
-  if(req.params.usernames){
-    console.log("proceeding as")
-    if(typeof req.params.usernames == "string"){
-      console.log("proceeding as string")
-      markovtweet([req.params.usernames], function(err, data){
-        if(err) return err
-        console.log(data)
-        res.writeHead(200, {'Content-Type': 'text/plain', 'Strict-Transport-Security': ['max-age=60000','includeSubDomains']});
-        res.end(data);
-      })
+app.get('/tweet', forceHTTPS, function (req, res) {
+  if(req.query.usernames){
+    if(typeof req.query.usernames == "string"){
+      markovtweet([req.query.usernames], function(error, tweet){
+
+        if(error) throw error;
+        res.send(tweet)
+        res.end()
+
+      });
     }
     else{
-      console.log("proceeding as list")
-      markovtweet(req.params.usernames, function(err, data){
-        if(err) return err
-        console.log(data)
-        res.writeHead(200, {'Content-Type': 'text/plain', 'Strict-Transport-Security': ['max-age=60000','includeSubDomains'] });
-        res.end(data);
-      })
+      markovtweet(req.query.usernames, function(error, tweet){
+
+        if(error) console.log(error);
+        res.json({'tweet': tweet})
+        res.end()
+
+      });
     }
   }
-
 });
-
-//A sample GET request
-dispatcher.onGet("/", function(req, res) {
-  res.writeHead(200, {'Content-Type': 'text/html', 'Strict-Transport-Security': ['max-age=60000','includeSubDomains']});
-  var file = fs.readFile('index.html', 'utf8', function callback(err, data){
+//returns ./index.css
+app.get('/index.css', forceHTTPS, function (req, res) {
+  var file = fs.readFile('index.css', 'utf8', function callback(err, css){
     if (err) return console.error(err);
-    var html = data
-    res.write(html)
-    res.end();
+    res.type('text/css')
+    res.send(css)
   });
 });
-
-dispatcher.onGet("/index.js", function(req, res) {
-  res.writeHead(200, {'Content-Type': 'application/javascript', 'Strict-Transport-Security': ['max-age=60000','includeSubDomains']});
-  var file = fs.readFile('index.js', 'utf8', function callback(err, data){
+//returns ./index.js
+app.get('/index.js', forceHTTPS, function (req, res) {
+  var file = fs.readFile('index.js', 'utf8', function callback(err, js){
     if (err) return console.error(err);
-    var html = data
-    res.write(html)
-    res.end();
+    res.type('application/javascript')
+    res.send(js)
   });
 });
-
-dispatcher.onGet("/index.css", function(req, res) {
-  res.writeHead(200, {'Content-Type': 'text/css', 'Strict-Transport-Security': ['max-age=60000','includeSubDomains'], 'Strict-Transport-Security': ['max-age=60000','includeSubDomains']});
-  var file = fs.readFile('index.css', 'utf8', function callback(err, data){
-    if (err) return console.error(err);
-    var html = data
-    res.write(html)
-    res.end();
-  });
+//initiate the server :D
+app.listen(process.env.PORT || 5000, function () {
+  console.log("Server listening on: http://localhost:%s", process.env.PORT || 5000);
 });
