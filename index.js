@@ -17,9 +17,11 @@ var httpGetCallback = function(error, tweet){
 var btnclick = function(){
   var usernames = document.getElementById('username').value.split(" ");
   var url = 'https://automatically-generated-tweets.herokuapp.com/tweet?'
+
   for(var i = 0; i < usernames.length; i++){
     url = url + "usernames=" + usernames[i] + "&"
   }
+
   httpGetAsync(url,function(error, tweet){
     if(error){console.log(error);}
     console.log(tweet)

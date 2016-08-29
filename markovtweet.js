@@ -11,60 +11,63 @@ var tapi = new twitter({
   bearer_token: process.env.TWITTER_BEARER_TOKEN
 });
 
-var tweets_text = []
-var mark_obj = {}
-var nouns = []
-var verbs = []
-var result = []
 
-var markovchain = function (tweets_text){
+
+var markovchain = function (tweets_text, mark_data){
+  var markov_chain_obj = mark_data
+  console.log(mark_data)
+
+
   for(var i = 0; i < tweets_text.length; i++){
     //loops through tweet-arrays split into words
     for(var j = 0; j < (tweets_text[i].length - 2); j++){
       //loops through words in said tweet arrays
-      if(mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]]){//if the key exists
-        if(mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]].indexOf(tweets_text[i][j+2]) == -1){
-          //console.log(mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]])
-          mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]].push(tweets_text[i][j+2])
+      if(markov_chain_obj[ tweets_text[i][j] + " " + tweets_text[i][j + 1] ]){//if the key exists
+        if(markov_chain_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]].indexOf(tweets_text[i][j+2]) == -1){
+          //console.log(markov_chain_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]])
+          markov_chain_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]].push(tweets_text[i][j+2])
         }
       }
       else{
-        mark_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]] = [tweets_text[i][j+2]]
+        markov_chain_obj[tweets_text[i][j] + " " + tweets_text[i][j + 1]] = [tweets_text[i][j+2]]
         //console.log(tweets_text[i][j+2])
       }
     }
   }
   //console.log("Markov chained")
-  return mark_obj
+  return markov_chain_obj
 
 }
 
-var markov_to_tweet = function (mark_obj) {
+var markov_to_tweet = function (mark_data) {
   var result_in = []
-  while(true){
-    if(result_in.length == 0){
-      filler=randobj(mark_obj)
-      filler2=Object.keys(filler)[0].split(" ")
-      result_in.push(filler2[0])
-      result_in.push(filler2[1])
-      result_in.push(randitem(filler[Object.keys(filler)[0]]))
+    while(true){
+      if(result_in.length == 0){
+        filler=randobj(mark_data)
+        filler2=Object.keys(filler)[0].split(" ")
+        result_in.push(filler2[0])
+        result_in.push(filler2[1])
+        result_in.push(randitem(filler[Object.keys(filler)[0]]))
+      }
+      else if(result_in[result_in.length-1] == undefined){
+        result_in.pop()
+        break;
+      }
+      else{
+        result_in.push(randitem(mark_data[result_in[result_in.length-2] + " " + result_in[result_in.length-1]] ))
+      }
     }
-    else if(result_in[result_in.length-1] == undefined){
-      result_in.pop()
-      break;
+    if(result_in.join(" ").length > 140){
+      return result_in
     }
-    else{
-      result_in.push(randitem(mark_obj[result_in[result_in.length-2] + " " + result_in[result_in.length-1]] ))
-    }
-  }
-  if(result_in.join(" ").length > 140){
-    return result_in
-  }
 }
 //single  user markovtweet
 // usernames is a list of strings, callback is a function with args (err, data), inceptions is an int
 var markovtweet = function (usernames, callback){
   //gather tweets from users
+  var markov_chain_obj = {}
+  var tweets_text = []
+
   for(var i = 0; i < usernames.length; i++){
     if(usernames[i][0] == '@'){
       usernames[i] = usernames[i].substr(1);
@@ -75,22 +78,14 @@ var markovtweet = function (usernames, callback){
       for(var i = 0; i < tweets.length; i++){
         tweets_text.push(tweets[i].text.split(" "))
       }
-      mark_obj = markovchain(tweets_text)
-      //console.log("Tweets obtained")
+      markov_chain_obj = markovchain(tweets_text, markov_chain_obj)
 
-      //console.log("Proceeding into inception for loop")
-      /*for(var i = 0; i < inceptions; i++){
-        let fake_tweets_text = []
-        for(var i = 0; i < 50; i++){
-          fake_tweets_text.push(markov_to_tweet(mark_obj))
-        }
-        mark_obj = markovchain(fake_tweets_text, mark_obj)
-      }
-*/
-      result = markov_to_tweet(mark_obj)
+      var result = markov_to_tweet(markov_chain_obj)
       while(!result){
-        result = markov_to_tweet(mark_obj)
+        result = markov_to_tweet(markov_chain_obj)
       }
+
+
       console.log(result.join(" "))
       return callback(null, result.join(" "))
     })

@@ -1,7 +1,6 @@
 //Lets require/import the HTTP module
 var express = require('express');
 var app = express();
-var markovtweet = require('./markovtweet');
 var fs = require('fs')
 
 //forces HTTPS by checking if the user is on the http version and redirecting to https if so
@@ -29,9 +28,10 @@ app.get('/',  function (req, res) {
 
 app.get('/tweet',  function (req, res) {
   if(req.query.usernames){
+    console.log(req.query.usernames)
     if(typeof req.query.usernames == "string"){
+      var markovtweet = require('./markovtweet');
       markovtweet([req.query.usernames], function(error, tweet){
-
         if(error) throw error;
         res.send(tweet)
         res.end()
@@ -39,14 +39,19 @@ app.get('/tweet',  function (req, res) {
       });
     }
     else{
+      var markovtweet = require('./markovtweet');
       markovtweet(req.query.usernames, function(error, tweet){
 
         if(error) console.log(error);
-        res.json({'tweet': tweet})
+        res.send(tweet)
         res.end()
 
       });
     }
+  }
+  else{
+    res.send("Type a twitter username in the textbox!")
+    res.end()
   }
 });
 //returns ./index.css
