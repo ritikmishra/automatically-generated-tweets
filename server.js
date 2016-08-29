@@ -39,14 +39,14 @@ app.get('/tweet',  function (req, res) {
       });
     }
     else{
+      var response;
       var markovtweet = require('./markovtweet');
       markovtweet(req.query.usernames, function(error, tweet){
-
         if(error) console.log(error);
-        res.send(tweet)
-        res.end()
-
+        response = tweet
       });
+      res.send(response)
+      res.end()
     }
   }
   else{
