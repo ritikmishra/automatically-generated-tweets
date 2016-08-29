@@ -3,7 +3,7 @@ var twitter = require('twitter')
 //var natural = require('.node_modules/natural')
 var randobj = require('pick-pair')
 var randitem = require('pick-item')
-
+var deasync = require('deasync');
 //begining
 var tapi = new twitter({
   consumer_key: process.env.TWITTER_CONSUMER_KEY,
@@ -12,10 +12,8 @@ var tapi = new twitter({
 });
 
 
-
 var markovchain = function (tweets_text, mark_data){
   var markov_chain_obj = mark_data
-  console.log(mark_data)
 
 
   for(var i = 0; i < tweets_text.length; i++){
@@ -61,14 +59,20 @@ var markov_to_tweet = function (mark_data) {
       return result_in
     }
 }
-//single  user markovtweet
+
+
+
 // usernames is a list of strings, callback is a function with args (err, data), inceptions is an int
 var markovtweet = function (usernames, callback){
   //gather tweets from users
+  var done = false;
+  console.log(usernames.length - 1)
+
   var markov_chain_obj = {}
   var tweets_text = []
 
   for(var i = 0; i < usernames.length; i++){
+    console.log(i)
     if(usernames[i][0] == '@'){
       usernames[i] = usernames[i].substr(1);
     }
@@ -78,23 +82,23 @@ var markovtweet = function (usernames, callback){
       for(var i = 0; i < tweets.length; i++){
         tweets_text.push(tweets[i].text.split(" "))
       }
-      markov_chain_obj = markovchain(tweets_text, markov_chain_obj)
+      console.log("Finished obtaining tweets")
+      done = true;
 
-      var result = markov_to_tweet(markov_chain_obj)
-      while(!result){
-        result = markov_to_tweet(markov_chain_obj)
-      }
-
-
-      console.log(result.join(" "))
-      return callback(null, result.join(" "))
     })
   }
 
+  deasync.loopWhile(function(){return !done;});
+  console.log("Processing tweets")
+  markov_chain_obj = markovchain(tweets_text, markov_chain_obj)
+  var result = markov_to_tweet(markov_chain_obj)
+  while(!result){
+    result = markov_to_tweet(markov_chain_obj)
+  }
 
+  return callback(null, result.join(" "))
 
 }// end of function
-
 
 
 module.exports = markovtweet
