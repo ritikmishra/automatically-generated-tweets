@@ -1,5 +1,6 @@
 var markovtweet = require('./markovtweet');
-markovtweet(process.argv[2], function(error, tweet){
+  var result = []
+markovtweet(['ritmish', 'rishmishra'], function(error, tweet){
   if (error) return error
-  console.log(tweet);
+  console.log(tweet)
 })

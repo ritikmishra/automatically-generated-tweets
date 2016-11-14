@@ -1,44 +1,30 @@
-'use strict';
-const electron = require('electron');
-const markovtweet = require('./markovtweet')
-const {app, BrowserWindow} = electron
-
-// adds debug features like hotkeys for triggering dev tools and reload
-require('electron-debug')();
-
-// prevent window being garbage collected
-let mainWindow;
-
-function onClosed() {
-	// dereference the window
-	// for multiple windows store them in an array
-	mainWindow = null;
+var httpGetAsync = function (theUrl, callback){
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(null, xmlHttp.responseText);
+    }
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous
+    xmlHttp.send(null);
 }
 
-function createMainWindow() {
-	const win = new electron.BrowserWindow({
-		width: 1080,
-		height: 720
-	});
+var httpGetCallback = function(error, tweet){
+	if(error){console.log(error);}
+	document.getElementById("result").innerHTML = tweet;
 
-	win.loadURL(`file://${__dirname}/index.html`);
-	win.on('closed', onClosed);
-
-	return win;
 }
 
-app.on('window-all-closed', () => {
-	if (process.platform !== 'darwin') {
-		app.quit();
-	}
-});
+var btnclick = function(){
+  var usernames = document.getElementById('username').value.split(" ");
+  var url = 'https://automatically-generated-tweets.herokuapp.com/tweet?'
 
-app.on('activate', () => {
-	if (!mainWindow) {
-		mainWindow = createMainWindow();
-	}
-});
+  for(var i = 0; i < usernames.length; i++){
+    url = url + "usernames=" + usernames[i] + "&"
+  }
 
-app.on('ready', () => {
-	mainWindow = createMainWindow();
-});
+  httpGetAsync(url,function(error, tweet){
+    if(error){console.log(error);}
+    console.log(tweet)
+    document.getElementById('result').innerHTML = tweet;
+  } )
+}

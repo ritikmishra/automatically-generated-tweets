@@ -6,20 +6,9 @@ body {
 
 body {
 	font-family: 'Ubuntu', sans-serif;
-}
-
-.jumbotron {
-	text-align: left;
-}
-.container {
 	text-align: center;
-}
 
-button {
-	font-size: 20px;
-	width: 90px;
-  height: 40px;
-	padding-top: 15px;
+
 }
 
 h1 {
@@ -27,4 +16,19 @@ h1 {
 	font-weight: 100;
 	margin: 0;
 	padding: 0;
+}
+
+#username {
+	font-size: 2.5vh;
+	height:10.5vh;
+}
+
+#button {
+	border: none;
+	height: 10.5vh;
+	width: 33vw;
+}
+#button-text{
+	font-family: "Ubuntu",sans-serif;
+  font-size: 3vh;
 }
